@@ -33,6 +33,9 @@ b += text(16, 292, "Players: 1 / 32  ·  Game: Counter-Strike  ·  VAC: secure",
 (OUT / "status.svg").write_text(window(W, 304, "Server Info", b), encoding="utf-8")
 
 # ---------- ] find servers ----------
+servers = [("bolt", "Polaron — systems language", "compiler", "live", "c", "Polaron / C", 12),
+           ("robot", "agents.exe — LLM civ sim", "polaron · llm", "live", "bolt", "Polaron", 24),
+           ("monitor", "js-tech-series — MC computers", "neoforge", "live", "openjdk", "Java", 31)]
 tabs = ["Internet", "Favorites", "History", "Spectate", "Lan", "Friends"]
 b, x = "", 16
 for i, t in enumerate(tabs):
@@ -42,15 +45,11 @@ for i, t in enumerate(tabs):
     else:
         b += f'<rect x="{x}" y="46" width="{tw}" height="22" fill="{DARK}"/>' + text(x + 12, 62, t, 13, DIM)
     x += tw + 2
-b += panel(16, 68, W - 32, 176)
-cols = [(28, "Servers (4)"), (360, "Game"), (520, "Status"), (620, "Lang"), (832, "Latency")]
+b += panel(16, 68, W - 32, 26 + 26 * len(servers) + 20)
+cols = [(28, f"Servers ({len(servers)})"), (360, "Game"), (520, "Status"), (620, "Lang"), (832, "Latency")]
 b += f'<rect x="18" y="70" width="{W-36}" height="24" fill="{BG}"/>' + bevel(18, 70, W - 36, 24)
 for cx, c in cols:
     b += text(cx, 87, c, 12, TX, anchor="end" if c == "Latency" else "start")
-servers = [("bolt", "Polaron — systems language", "compiler", "live", "c", "Polaron / C", 12),
-           ("robot", "agents.exe — LLM civ sim", "unity · llm", "live", "csharp", "C#", 24),
-           ("monitor", "js-tech-series — MC computers", "neoforge", "live", "openjdk", "Java", 31),
-           ("skull", "Slayer — boomer shooter", "fps", "paused", "unity", "C# / Unity", 58)]
 for i, (ic, n, m, s, li, l, p) in enumerate(servers):
     yy = 96 + i * 26
     if i == 0:
@@ -59,12 +58,15 @@ for i, (ic, n, m, s, li, l, p) in enumerate(servers):
     dot = Y if s == "live" else "#B0703A"
     fg = TX if i else "#FFFFFF"
     b += (icon(ic, 26, ty - 13, 16) + text(50, ty, n, 13, fg) + text(360, ty, m, 13, TX, mono=True)
-          + f'<rect x="520" y="{ty-9}" width="8" height="8" fill="{dot}"/>' + text(534, ty, s, 13)
+          + f'<rect x="520" y="{ty-9}" width="8" height="8" fill="{dot}">'
+          + (f'<animate attributeName="opacity" values="1;.25;1" dur="1.6s" begin="{i*.4}s" repeatCount="indefinite"/>' if s == "live" else "")
+          + '</rect>' + text(534, ty, s, 13)
           + icon(li, 620, ty - 12, 14) + text(642, ty, l, 13)
           + text(832, ty, p, 13, TX, anchor="end"))
-b += text(16, 268, "4 servers  ·  filters: not full, has players", 12, DIM)
-b += button(W - 334, 252, 100, 26, "Refresh all") + button(W - 226, 252, 100, 26, "Add server") + button(W - 118, 252, 102, 26, "Connect", Y)
-(OUT / "servers.svg").write_text(window(W, 292, "Find Servers", b), encoding="utf-8")
+fy = 68 + 26 + 26 * len(servers) + 20
+b += text(16, fy + 24, f"{len(servers)} servers  ·  filters: not full, has players", 12, DIM)
+b += button(W - 334, fy + 8, 100, 26, "Refresh all") + button(W - 226, fy + 8, 100, 26, "Add server") + button(W - 118, fy + 8, 102, 26, "Connect", Y)
+(OUT / "servers.svg").write_text(window(W, fy + 48, "Find Servers", b), encoding="utf-8")
 
 # ---------- ] buy menu ----------
 cats = [("1", "LANGUAGES", [("csharp", "C#", "AWP", 4750), ("dotnet", ".NET", "M4A1", 3100),
