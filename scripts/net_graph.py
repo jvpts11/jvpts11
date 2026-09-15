@@ -3,7 +3,7 @@
 Uso: GH_TOKEN=... GH_USER=jvpts11 python scripts/net_graph.py
      python scripts/net_graph.py --sample   (dados falsos, para testar o visual)
 """
-import json, os, sys, urllib.request
+import json, os, sys, urllib.error, urllib.request
 from collections import Counter
 from pathlib import Path
 from vgui import *
@@ -31,12 +31,20 @@ query($login: String!) {
 
 
 def fetch(user, token):
+    token = (token or "").strip()
+    if not token:
+        sys.exit("GH_TOKEN está vazio: confira o secret METRICS_TOKEN (nome exato, em Actions secrets).")
     req = urllib.request.Request(
         "https://api.github.com/graphql",
         data=json.dumps({"query": QUERY, "variables": {"login": user}}).encode(),
         headers={"Authorization": f"bearer {token}", "Content-Type": "application/json"})
-    with urllib.request.urlopen(req) as r:
-        data = json.load(r)
+    try:
+        with urllib.request.urlopen(req) as r:
+            data = json.load(r)
+    except urllib.error.HTTPError as e:
+        if e.code == 401:
+            sys.exit("401 Unauthorized: o token é inválido, expirou ou foi colado com erro. Gere outro e atualize o secret.")
+        raise
     if "errors" in data:
         sys.exit(f"GraphQL error: {data['errors']}")
     u = data["data"]["user"]
@@ -120,6 +128,6 @@ def render(d):
 
 
 if __name__ == "__main__":
-    data = sample() if "--sample" in sys.argv else fetch(os.environ.get("GH_USER", "jvpts11"), os.environ["GH_TOKEN"])
+    data = sample() if "--sample" in sys.argv else fetch(os.environ.get("GH_USER", "jvpts11"), os.environ.get("GH_TOKEN"))
     OUT.write_text(render(data), encoding="utf-8")
     print(f"wrote {OUT}")

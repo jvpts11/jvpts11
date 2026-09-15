@@ -18,7 +18,7 @@ jobs:
           python-version: "3.12"
       - name: Render net_graph.svg
         env:
-          GH_TOKEN: ${{ secrets.METRICS_TOKEN }}
+          GH_TOKEN: ${{ secrets.METRICS_TOKEN || github.token }}
           GH_USER: ${{ github.repository_owner }}
           ICON_COLORS: muted   # mono · muted · brand
         run: python scripts/net_graph.py
