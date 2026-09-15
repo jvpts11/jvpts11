@@ -7,6 +7,7 @@ import json, os, sys, urllib.error, urllib.request
 from collections import Counter
 from pathlib import Path
 from vgui import *
+from snake import LEVELS, render_snake
 
 OUT = Path(__file__).resolve().parent.parent / "assets" / "net_graph.svg"
 QUERY = """
@@ -24,7 +25,7 @@ query($login: String!) {
     contributionsCollection {
       totalCommitContributions
       totalPullRequestContributions
-      contributionCalendar { totalContributions weeks { contributionDays { contributionCount } } }
+      contributionCalendar { totalContributions weeks { contributionDays { contributionCount weekday contributionLevel } } }
     }
   }
 }"""
@@ -66,6 +67,8 @@ def fetch(user, token):
         "colors": colors,
         "weeks": [sum(d["contributionCount"] for d in w["contributionDays"])
                   for w in cc["contributionCalendar"]["weeks"]],
+        "grid": [[(d["weekday"], LEVELS[d["contributionLevel"]]) for d in w["contributionDays"]]
+                 for w in cc["contributionCalendar"]["weeks"]],
     }
 
 
@@ -76,6 +79,7 @@ def sample():
             "stars": 2, "followers": 6,
             "langs": Counter({"C#": 380, "Java": 240, "Python": 180, "C": 120, "JavaScript": 80}),
             "colors": {"C#": "#178600", "Java": "#B07219", "Python": "#3572A5", "C": "#555555", "JavaScript": "#F1E05A"},
+            "grid": [[(wd, random.choice([0, 0, 1, 1, 2, 3, 4])) for wd in range(7)] for _ in range(53)],
             "weeks": [random.randint(0, 40) + (i > 38) * random.randint(30, 90) for i in range(53)]}
 
 
@@ -130,4 +134,6 @@ def render(d):
 if __name__ == "__main__":
     data = sample() if "--sample" in sys.argv else fetch(os.environ.get("GH_USER", "jvpts11"), os.environ.get("GH_TOKEN"))
     OUT.write_text(render(data), encoding="utf-8")
-    print(f"wrote {OUT}")
+    SNAKE = OUT.with_name("snake.svg")
+    SNAKE.write_text(render_snake(data["grid"], data["login"]), encoding="utf-8")
+    print(f"wrote {OUT} and {SNAKE}")
