@@ -6,7 +6,6 @@
 
 <p align="center">
   <a href="https://jvpts11.github.io" title="Open portfolio"><img src="https://img.shields.io/badge/%5D_connect-portfolio-4C5844?style=flat-square&labelColor=3E4637" alt="portfolio"/></a>
-  <a href="https://www.linkedin.com/in/SEU-USUARIO" title="LinkedIn"><img src="https://img.shields.io/badge/%5D_connect-linkedin-4C5844?style=flat-square&labelColor=3E4637" alt="linkedin"/></a>
   <a href="mailto:SEU-EMAIL" title="Send an email"><img src="https://img.shields.io/badge/%5D_say-email-4C5844?style=flat-square&labelColor=3E4637" alt="email"/></a>
   <img src="https://komarev.com/ghpvc/?username=jvpts11&label=players%20connected&color=C4B550&style=flat-square" alt="views" title="Profile views"/>
 </p>

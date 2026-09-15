@@ -23,6 +23,8 @@ jobs:
 
       - name: Commit
         run: |
+          ls -la dist
+          test -s dist/snake.svg || { echo "snake.svg não foi gerado"; exit 1; }
           mkdir -p assets
           cp dist/snake.svg assets/snake.svg
           git config user.name "github-actions[bot]"
