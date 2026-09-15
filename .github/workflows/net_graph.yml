@@ -1,0 +1,31 @@
+name: net_graph
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Render net_graph.svg
+        env:
+          GH_TOKEN: ${{ secrets.METRICS_TOKEN }}
+          GH_USER: ${{ github.repository_owner }}
+          ICON_COLORS: muted   # mono · muted · brand
+        run: python scripts/net_graph.py
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/net_graph.svg
+          git diff --cached --quiet || git commit -m "chore: update net_graph"
+          git push
