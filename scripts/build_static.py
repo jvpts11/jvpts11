@@ -6,14 +6,14 @@ OUT = Path(__file__).resolve().parent.parent / "assets"
 W = 860
 
 # ---------- ] status ----------
-rows = [("hostname", "jvpts11"), ("role", "AI Engineer"), ("map", "de_braga (Portugal)"),
-        ("class", "fine-tuning · datasets · .NET"),
+rows = [("hostname", "jvpts11"), ("role", "Software Engineer"), ("map", "de_braga (Portugal)"),
+        ("class", ".NET"),
         ("side", "MSc Game Dev @ IPCA"), ("clan", "Skill Issue (guitar)")]
 b = text(20, 60, "] status", 13, Y, mono=True)
 b += panel(16, 70, 132, 200)
 b += f'<circle cx="82" cy="140" r="48" fill="{TX}"/>' + pixel("j", 52, 110, 60, SH)
 b += text(82, 214, "jvpts11", 13, TX, anchor="middle") + text(82, 232, "he/him", 11, DIM, anchor="middle")
-b += icon("anvil", 40, 244, 14) + text(60, 256, "rank: AI Eng", 11, Y)
+b += icon("anvil", 40, 244, 14) + text(60, 256, "rank: SW Eng", 11, Y)
 b += panel(160, 70, 416, 200)
 for i, (k, v) in enumerate(rows):
     yy = 100 + i * 29
@@ -72,9 +72,9 @@ b += button(W - 334, fy + 8, 100, 26, "Refresh all") + button(W - 226, fy + 8, 1
 cats = [("1", "LANGUAGES", [("csharp", "C#", "AWP", 4750), ("dotnet", ".NET", "M4A1", 3100),
                             ("openjdk", "Java", "AK-47", 2500), ("python", "Python", "MP5", 1500),
                             ("cplusplus", "C / C++", "Deagle", 650)]),
-        ("2", "AI / ML", [("pytorch", "PyTorch", "Scout", 2750),
-                          ("sliders", "Fine-tuning", "Kevlar", 650), ("database", "Datasets", "HE Grenade", 300),
-                          ("huggingface", "Hugging Face", "Smoke", 300)]),
+        ("2", "FAVOURITE GAMES", [("leagueoflegends", "League of Legends", "Five-SeveN", 750), ("grass", "Minecraft", "Knife", 0),
+                                  ("gear", "Factorio", "M249", 5750), ("planet", "No Man's Sky", "Scout", 2750),
+                                  ("skull", "Doom Eternal", "XM1014", 3000)]),
         ("3", "GAME DEV", [("unity", "Unity 6", "P90", 2350), ("blender", "Blender", "Flashbang", 200),
                            ("anvil", "NeoForge", "Galil", 2000), ("espressif", "ESP32", "Defuse kit", 200)]),
         ("4", "TOOLS", [("git", "Git", "USP", 500), ("docker", "Docker", "Glock", 400),

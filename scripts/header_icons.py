@@ -7,7 +7,7 @@ h = p.read_text(encoding="utf-8")
 anchor = '<path d="M16 327.5H844" stroke="#8C9284"/>'
 i = h.index(anchor) + len(anchor)
 j = h.index('<text x="844" y="343"')
-names = ["csharp", "dotnet", "python", "pytorch", "openjdk", "c",
+names = ["csharp", "dotnet", "python", "openjdk", "c",
          "cplusplus", "unity", "blender", "espressif", "git", "docker", "linux"]
 bar = "".join(vgui.icon(n, 16 + k * 24, 331, 15) for k, n in enumerate(names))
 p.write_text(h[:i] + "\n  " + bar + "\n  " + h[j:], encoding="utf-8")
